@@ -1,0 +1,50 @@
+use my_first_db
+
+db.createCollection("students")
+
+db.students.insert({name: "Daniel", home_state: "Vegas", lucky_number: 8, birthday: {month: 12, day: 08, year: 1985}})
+db.students.insert({name: "Rachel", home_state: "Vegas", lucky_number: 7, birthday: {month: 07, day: 10, year: 1992}})
+db.students.insert({name: "Pepper", home_state: "California", lucky_number: 1, birthday: {month: 08, day: 01, year: 2013}})
+db.students.insert({name: "Penny", home_state: "Washington", lucky_number: 10, birthday: {month: 02, day: 07, year: 2010}})
+db.students.insert({name: "Daisy", home_state: "Hell", lucky_number: 11, birthday: {month: 11, day: 01, year: 2014}})
+
+db.students.find().pretty()
+
+db.students.find({home_state: "California"}).pretty()
+
+db.students.find({home_state: "Washington"}).pretty()
+
+db.students.find({lucky_number: {$gt: 3}}).pretty()
+
+db.students.find({lucky_number: {$lte: 10}}).pretty()
+
+db.students.find({$and: [{lucky_number: {$lte: 9}}, {lucky_number: {$gte: 1}}]})
+
+db.students.update({}, {$set: {"interests":["coding", "brunch","MongoDB"]}},{multi:true})
+
+db.students.update({name: "Daniel"}, {$push: {interests: "snowboarding"}})
+db.students.update({name: "Rachel"}, {$push: {interests: "skiing"}})
+db.students.update({name: "Pepper"}, {$push: {interests: "belly rub"}})
+db.students.update({name: "Penny"}, {$push: {interests: "fetch"}})
+db.students.update({name: "Daisy"}, {$push: {interests: "whining"}})
+
+db.students.update({name: "Daisy"}, {$push: {interests: "taxes"}})
+
+db.students.update({name: "Daisy"}, {$pop: {interest: 1}})
+
+db.students.remove({home_state: "California"})
+
+db.students.remove({name:"Daniel"})
+
+db.students.remove({lucky_number: {$gt: 5}},true)
+
+db.students.update({}, {$set: {number_of_belts: 0}}, {multi: true})
+
+db.students.update({home_state: "Washington"},{$set: {number_of_belts: 1}}, {multi: true})
+
+db.students.update({}, {$rename: {number_of_belts: "belts_earned"}}, {multi: true})
+
+db.students.update({}, {$unset: {lucky_number: ""}}, {multi: true})
+
+db.students.update({},{$set: {updated_on: null}},{multi:true})
+db.students.update({},{$currentDate: {updated_on: true}},{multi:true})
